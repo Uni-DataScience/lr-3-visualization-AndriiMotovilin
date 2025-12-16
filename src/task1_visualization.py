@@ -1,21 +1,29 @@
-import matplotlib.pyplot as plt
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Iterable
+
 import numpy as np
-import collections
+import matplotlib.pyplot as plt
 
 
-def plot_distribution(data):
-    """
-    Plots the distribution of data using a bar chart.
+def plot_distribution(data: Iterable[str]):
+    arr = np.asarray(list(data))
 
-    Parameters:
-    data (array-like): An array of categorical data items.
-    """
-    
-    fig, _ = plt.subplots()
-    pass
+    # Compute frequencies
+    unique, counts = np.unique(arr, return_counts=True)
+
+    fig, ax = plt.subplots(figsize=(6, 4))
+    ax.bar(unique, counts)
+    ax.set_xlabel("Category")
+    ax.set_ylabel("Frequency")
+    ax.set_title("Category Frequency")
+
+    fig.tight_layout()
+
+    # Save result to plots/
+    out_dir = Path(__file__).resolve().parents[1] / "plots"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_dir / "task1_bar_chart.png", dpi=150)
+
     return fig
-
-
-# Example data
-data = np.random.choice(['A', 'B', 'C'], size=100)
-plot_distribution(data)
